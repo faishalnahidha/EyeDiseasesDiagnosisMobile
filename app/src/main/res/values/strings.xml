@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Eye Diseases Diagnosis Mobile</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_hint">Please select the symptoms...</string>
+    <string name="text_your_eye">Your eye disease was</string>
+    <string name="label_score">score</string>
+</resources>

@@ -2,6 +2,7 @@ package com.izzan.eyediseasesdiagnosismobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,6 +35,9 @@ public class ScrollingActivity extends AppCompatActivity
 
     public CoordinatorLayout mCoordinatorLayout;
 
+    private boolean doubleBackToExitPressedOnce;
+    private Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +58,7 @@ public class ScrollingActivity extends AppCompatActivity
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,23 +70,33 @@ public class ScrollingActivity extends AppCompatActivity
             }
         });
 
+        final FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ScrollingActivity.this, ResultActivity.class);
+                intent.putExtra("INPUT_DATA", getInputDataArray());
+                startActivity(intent);
+            }
+        });
+
         reloadList();
         Log.i("SYMPTOMS_SIZE", String.valueOf(mSymptomList.size()));
     }
 
-    private void reloadList(){
+    private void reloadList() {
         List<Symptom> list = Symptom.getAll();
         mSymptomList.clear();
         mSymptomList.addAll(list);
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private int[] getInputDataArray(){
+    private int[] getInputDataArray() {
 
         int[] inputData = new int[27];
         int i = 0;
 
-        for(Symptom mSymptom : mSymptomList){
+        for (Symptom mSymptom : mSymptomList) {
             inputData[i] = mSymptom.getSymptomArise();
             i++;
         }
@@ -129,6 +143,34 @@ public class ScrollingActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private final Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            doubleBackToExitPressedOnce = false;
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacks(mRunnable);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Snackbar.make(mCoordinatorLayout, "Please click BACK again to exit", Snackbar.LENGTH_SHORT).show();
+
+        mHandler.postDelayed(mRunnable, 2000);
     }
 
 }

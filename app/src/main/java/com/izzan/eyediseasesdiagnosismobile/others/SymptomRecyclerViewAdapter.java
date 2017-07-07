@@ -64,7 +64,9 @@ public class SymptomRecyclerViewAdapter
         String number = mSymptom.getId().toString();
 
         TextDrawable drawable = TextDrawable.builder()
-                .buildRound(number, mGenerator.getColor(getItem(position)));
+                .buildRound(number, mGenerator.getColor(position));
+        /*TextDrawable drawable = TextDrawable.builder()
+                .buildRound(number, Color.parseColor("#ff77a9"));*/
         holder.icon.setImageDrawable(drawable);
         holder.symptomDescription.setText(mSymptom.getName());
 

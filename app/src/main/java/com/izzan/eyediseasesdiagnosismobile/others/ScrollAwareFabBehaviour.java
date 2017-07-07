@@ -38,7 +38,7 @@ public class ScrollAwareFabBehaviour extends FloatingActionButton.Behavior {
              */
             child.show();
             child.setVisibility(View.VISIBLE);
-        } else if (dyConsumed < -20 && child.getVisibility() == View.VISIBLE) {
+        } else if (dyConsumed < 0 && child.getVisibility() == View.VISIBLE) {
             /**
              * Scrolling up
              */

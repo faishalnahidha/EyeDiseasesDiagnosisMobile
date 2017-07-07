@@ -1,11 +1,13 @@
 package com.izzan.eyediseasesdiagnosismobile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +15,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.izzan.eyediseasesdiagnosismobile.models.Symptom;
 import com.izzan.eyediseasesdiagnosismobile.others.DividerItemDecoration;
 import com.izzan.eyediseasesdiagnosismobile.others.SymptomRecyclerViewAdapter;
@@ -37,6 +41,8 @@ public class ScrollingActivity extends AppCompatActivity
 
     private boolean doubleBackToExitPressedOnce;
     private Handler mHandler = new Handler();
+
+    public ColorGenerator mGenerator = ColorGenerator.MATERIAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +110,47 @@ public class ScrollingActivity extends AppCompatActivity
         return inputData;
     }
 
+    private void showAboutDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        //set title dialog
+        alertDialogBuilder.setTitle(R.string.action_about);
+
+        //set pesan dari dialog
+        alertDialogBuilder
+                .setMessage(getString(R.string.text_app_version) +
+                        "\nCopyright \u00a9 2017 by Faishal Nahidha"
+                        + "\nPoliteknik Elektronika Negeri Surabaya"
+                        + "\n\nPlease visit : " +
+                        "\n\t faishalnahidha.890.com" +
+                        "\n\t izzan.carbonmade.com " +
+                        "\n\t www.persona.my.id")
+                .setIcon(R.mipmap.ic_pens)
+                .setCancelable(false)
+                .setPositiveButton(R.string.button_thanks, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+        //membuat alert dialog dari builder
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        //menampilkan alert dialog
+        alertDialog.show();
+    }
+
     @Override
     public void onClick(View view, int position) {
         if (position > -1) {
             Log.d("LIST_POSITION", String.valueOf(position));
             Symptom mSymptom = mSymptomList.get(position);
+
+            SymptomRecyclerViewAdapter.MyViewHolder itemView =
+                    (SymptomRecyclerViewAdapter.MyViewHolder) mRecyclerView.findViewHolderForLayoutPosition(position);
+
+            TextDrawable originalDrawable = (TextDrawable) itemView.icon.getDrawable();
+
             // Save the selected positions to the SparseBooleanArray
             if (selectedItems.get(position, false)) {
                 //item not selected
@@ -139,7 +181,8 @@ public class ScrollingActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            showAboutDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);

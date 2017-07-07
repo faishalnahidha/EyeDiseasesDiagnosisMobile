@@ -4,4 +4,8 @@
     <string name="app_hint">Please select the symptoms...</string>
     <string name="text_your_eye">Your eye disease was</string>
     <string name="label_score">score</string>
+    <string name="label_disease">Possible eye disease</string>
+    <string name="button_thanks">THANK YOU</string>
+    <string name="text_app_version">Eye Diseases Diagnosis Mobile v1.0.1</string>
+    <string name="action_about">About</string>
 </resources>

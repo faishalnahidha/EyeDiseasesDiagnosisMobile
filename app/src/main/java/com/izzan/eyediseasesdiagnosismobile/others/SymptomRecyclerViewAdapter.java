@@ -2,7 +2,6 @@ package com.izzan.eyediseasesdiagnosismobile.others;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +67,12 @@ public class SymptomRecyclerViewAdapter
                 .buildRound(number, mGenerator.getColor(getItem(position)));
         holder.icon.setImageDrawable(drawable);
         holder.symptomDescription.setText(mSymptom.getName());
+
+        if(mSymptom.getSymptomArise() == 0){
+            holder.itemView.setSelected(false);
+        } else if (mSymptom.getSymptomArise() == 1){
+            holder.itemView.setSelected(true);
+        }
     }
 
     @Override

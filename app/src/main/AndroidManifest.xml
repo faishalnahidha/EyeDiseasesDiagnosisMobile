@@ -10,6 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.izzan.eyediseasesdiagnosismobile"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="eyedisease_db.db" />
